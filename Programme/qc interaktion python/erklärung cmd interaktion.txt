@@ -1,0 +1,9 @@
+1. cmd öffnen
+2. befehl: C:\Users\JIA\dwave\Scripts\activate (bzw. Speicherort des virtual enviroment in der die librarys installiert sind \activate zum aktivieren)
+3. befehl: cd C:\Users\Jakov\Desktop\git\bwinf-19-aufgabe-1-blumenbeet\Programme\qc interaktion python\Standard Python Skript (bzw. speicherort des scripts)
+4. befehl: embed-and-run.py (bzw. Name der Datei) zum ausführen der Datei
+5. zum beenden: C:\Users\JIA\dwave\Scripts\deactivate (speicherort der virtualenv \deactivate)
+
+Weiterführende Befehle (nur in der virtualenv):
+zum festlegen der Konfiguration (Api-Token, Solver, etc.): dwave config create
+zum betrachten der Konfiguration: dwave config inspect
