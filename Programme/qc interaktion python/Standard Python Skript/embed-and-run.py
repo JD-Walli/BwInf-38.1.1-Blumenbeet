@@ -15,7 +15,7 @@ print('Converted matrix into QUBO for D-Wave:\n', qubo, '\n')
 # embed and run on the D-Wave with 1000 reads
 sampler = EmbeddingComposite(DWaveSampler())
 response = sampler.sample_qubo(qubo, num_reads=10000, annealing_time=80,chain_strength=8)
-print('Response from the D-Wave:\n', response, '\n')
+#print('Response from the D-Wave:\n', response, '\n')
 # save results in results.txt
 with open('results.txt','w') as file:
     #file.write('energy\tnum_occurrences\tsample\n')
