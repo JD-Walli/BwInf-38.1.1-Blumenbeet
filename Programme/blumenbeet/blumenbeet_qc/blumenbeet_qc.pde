@@ -13,6 +13,8 @@ void setup() {
   hamiltonMatrix = new int[flowerNum*colorNum][flowerNum*colorNum];
   calculateHamiltonMatrix();
   exportHamiltonMatrix();
+  println();
+  printHamiltonMatrix(hamiltonMatrix);
   noLoop();
 }
 
@@ -20,7 +22,9 @@ void setup() {
 void draw() { 
   flowerConfig = new boolean[flowerNum][colorNum];
   randomizeFlowerConfig();
+  float millis1=millis();
   simulatedAnnealing();
+  println("Simann Millis: "+(millis()-millis1));
   flowerConfigGraphicalOutput(flowerConfig);
   exportGraph(simAnnGraph);
 }
