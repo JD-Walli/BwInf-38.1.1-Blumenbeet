@@ -11,6 +11,7 @@ void readFile() {
     wishes[i][0]=getColorID(s[0]);
     wishes[i][1]=getColorID(s[1]);
     wishes[i][2]=int(s[2]);
+    println(wishes[i][0] +" | "+wishes[i][1]);
   }
 }
 
@@ -36,7 +37,7 @@ void reassignColorIDs() {
       }
     }
     if (colorNum!=count) {
-      colorNum=count;
+      //colorNum=count; //je nachdem ob wunschpriorität oder farbanzahlpriorität
       println("Mehr Wunschfarben als max. Farbanzahl. Farbanzahl ");
     }
     print("Farbzuordnung:  ");
@@ -60,7 +61,7 @@ void calculateHamiltonMatrix() {
           }
 
           if (x!=a && l==m) { //möglichst wenig gleiche Farben
-            hamiltonMatrix[x*colorNum+l][a*colorNum+m] +=5;
+            hamiltonMatrix[x*colorNum+l][a*colorNum+m] +=6;
           }
 
           if (x==a&&l==m) { //Grundbelohnung
@@ -143,4 +144,16 @@ int getColorID(String colour) {
     break;
   }
   return colorID;
+}
+
+void printHamiltonMatrix(int[][]hamiltonMatrix){
+   //Hamiltonian-Matrix ausgeben
+  for (int i=0; i<hamiltonMatrix.length; i++) {
+    for (int j=0; j<hamiltonMatrix.length; j++) {
+      if (hamiltonMatrix[i][j] >= 0)
+        print(" ");
+      print(hamiltonMatrix[i][j]);
+    }
+    println();
+  } 
 }
