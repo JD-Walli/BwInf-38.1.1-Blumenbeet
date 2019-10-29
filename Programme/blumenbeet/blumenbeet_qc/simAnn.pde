@@ -24,7 +24,7 @@ void flowerConfigColorOutput() {
 //Lösung des Optimierungsproblem mit simulated annealing 
 void simulatedAnnealing() {
   float simAnn=costFunction(flowerConfig)-5;
-  for (int durchlauf=0; durchlauf<100000; durchlauf++) {
+  for (int durchlauf=0; durchlauf<200000; durchlauf++) {
     int alteKosten = costFunction(flowerConfig);
     int x = int(random(flowerNum));
     int y = int(random(colorNum));
@@ -35,6 +35,9 @@ void simulatedAnnealing() {
     if ((kostenUnterschied>=0 && (random(1)>=exp(-kostenUnterschied/simAnn)))) {
       flowerConfig[x][y]=!flowerConfig[x][y];
     }
+    //if(kosten==-70&&getScore()==22){
+    // break; 
+    //}
     simAnnGraph.add(durchlauf+" "+costFunction(flowerConfig));
     simAnn*=0.9999; //0.99999
   }
