@@ -1,4 +1,4 @@
-String solution="0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0";
+String solution="0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0";
 int flowerNum=9;
 int solutionInt[]=int(split(solution, " "));
 int colorNum=solutionInt.length/flowerNum;
@@ -20,23 +20,19 @@ void setup() {
       hamiltonMatrix[i][j]=int(matrixReihe[j]);
     }
   }
-
+  
+  for(int i=0;i<flowerNum;i++){
+   for(int j=0;j<colorNum;j++){
+     flowerConfig[i][j]=(solutionInt[i*colorNum+j]==0?false:true);
+   }
+  }
+  flowerConfigColorOutput();
   //kombi ausgeben
   println("Wunschkombinationen nach vereinfachung:");
   for (int i=0; i<wishes.length; i++) {
     println(wishes[i][0]+" "+wishes[i][1]+" "+wishes[i][2]+" ");
   }
-  
-  randomizeFlowerConfig();
-  //blumenkasten anzeigen
-  for (int i=0; i<colorNum; i++) {
-    print(i+": ");
-    for (int j=0; j<flowerNum; j++) {
-      print((flowerConfig[j][i]?1:0)+"  ");
-    }
-    println();
-  }
-  
+  println("Kosten: " +costFunction(flowerConfig));
   checkSolution();
   println("Punkte: "+getScore());
   flowerConfigGraphicalOutput(flowerConfig);
@@ -108,16 +104,6 @@ void checkSolution() {
 }
 
 
-//Blumenkonfiguration zufällig befüllen
-void randomizeFlowerConfig() {
-  for (int i=0; i<flowerNum; i++) {
-    for (int j=0; j<colorNum; j++) {
-      flowerConfig[i][j]=int(random(2))==0?false:true;
-    }
-  }
-}
-
-
 //Eingabedatei auslesen; wishes und colorNum initialisieren
 void readFile() {
   String[] strings = loadStrings("input.txt");
@@ -170,6 +156,7 @@ void flowerConfigGraphicalOutput(boolean blumenkasten[][]) {
 }
 
 
+//Kostenfunktion für simulated annealing
 int costFunction(boolean[][]blumenkastenLocal) {
   int ergebnis=0;
   int[] vektor=new int[flowerNum*colorNum];
@@ -191,60 +178,6 @@ int costFunction(boolean[][]blumenkastenLocal) {
     ergebnis+=vektor[i]*vektorerg[i];
   }
   return ergebnis;
-}
-
-//Generierung der problemspezifischen Hamilton-Matrix
-//(Die Bestrafungs- bzw. Belohnungswerte müssen ggf. an die Problemgröße angepasst werden) 88q
-void calculateHamiltonMatrix() {
-  for (int l=0; l<colorNum; l++) {
-    for (int x=0; x<flowerNum; x++) {
-      for (int m=0; m<colorNum; m++) {
-        for (int a=0; a<flowerNum; a++) {
-
-          if (x==a && l!=m) { //nur eine Farbe pro Kästchen
-            hamiltonMatrix[x*colorNum+l][a*colorNum+m] = 12;
-          }
-
-          if (x!=a && l==m) { //möglichst wenig gleiche Farben
-            hamiltonMatrix[x*colorNum+l][a*colorNum+m] +=5;
-          }
-
-          if (x==a&&l==m) { //Grundbelohnung
-            hamiltonMatrix[x*colorNum+l][a*colorNum+m] -= 4;
-          }
-
-
-          /*
-          Farbwunschbelohnung:
-           wenn Kästchen nebeneinanderliegen wird die gesamte kombi-Liste durchgegegangen und 
-           jede kombi überprüft ob sie grade von m und l dargestellt wird und die belohnung 
-           an der entsprechenden Stelle angetragen.
-           Die Felder sind folgendermaßen nummeriert:
-           0  2  5
-           1  4  7
-           3  6  8
-           */
-
-          if ((x==0&&a==1||x==1&&a==0)||(x==0&&a==2||x==2&&a==0)||
-            (x==1&&a==2||x==2&&a==1)||(x==1&&a==3||x==3&&a==1)||(x==1&&a==4||x==4&&a==1)||
-            (x==2&&a==4||x==4&&a==2)||(x==2&&a==5||x==5&&a==2)||
-            (x==3&&a==4||x==4&&a==3)||(x==3&&a==6||x==6&&a==3)||
-            (x==4&&a==5||x==5&&a==4)||(x==4&&a==6||x==6&&a==4)||(x==4&&a==7||x==7&&a==4)||
-            (x==5&&a==7||x==7&&a==5)||
-            (x==6&&a==7||x==7&&a==6)||(x==6&&a==8||x==8&&a==6)||
-            (x==7&&a==8||x==8&&a==7)) { //checkt ob grade 2 nebeneinanderliegende Felder von x und a dargestellt werden (Sorry Paul, ist nicht die schönste Variante)
-
-            for (int i=0; i<wishes.length; i++) {
-
-              if (wishes[i][0]==m&&wishes[i][1]==l || wishes[i][0]==l&&wishes[i][1]==m) {
-                hamiltonMatrix[x*colorNum+l][a*colorNum+m] -= 1.5*wishes[i][2];
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 }
 
 
@@ -277,6 +210,19 @@ void reassignColorIDs() {
       if (colorIDs[i]!=-1)print(i+"->"+colorIDs[i]+"  ");
     }
   }
+}
+
+
+//Blumenkasten nach Farben geordnet in Tabellenform ausgeben
+void flowerConfigColorOutput() {
+  for (int i=0; i<colorNum; i++) {
+    print("color"+i+": ");
+    for (int j=0; j<flowerNum; j++) {
+      print((flowerConfig[j][i]?1:0)+"  ");
+    }
+    println();
+  }
+  println();
 }
 
 
