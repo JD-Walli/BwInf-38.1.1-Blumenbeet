@@ -18,7 +18,6 @@ simAnn:
  - checkSolution()
  - flowerConfigGraphicalOutput()
  - getColorName()
- - exportGraph()
 */
 
 

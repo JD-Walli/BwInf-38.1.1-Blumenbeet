@@ -4,7 +4,6 @@ boolean[][] flowerConfig; //x=blumenkasten y=farbe
 int[][] hamiltonMatrix = new int[flowerNum*colorNum][flowerNum*colorNum]; //Matrix zur Ausführung auf Qc
 int colorIDs[] = {-1, -1, -1, -1, -1, -1, -1}; //88q
 int wishes[][]; //speichert Wunchkombinationen (Farbe1 Farbe2 Belohnung) 
-ArrayList<String> simAnnGraph = new ArrayList<String>();
 
 
 void setup() {
@@ -26,5 +25,4 @@ void draw() {
   simulatedAnnealing();
   println("Simann Millis: "+(millis()-millis1));
   flowerConfigGraphicalOutput(flowerConfig);
-  exportGraph(simAnnGraph);
 }

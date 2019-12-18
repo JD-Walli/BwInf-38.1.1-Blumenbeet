@@ -49,7 +49,7 @@ void reassignColorIDs() {
 
 
 //Generierung der problemspezifischen Hamilton-Matrix
-//(Die Bestrafungs- bzw. Belohnungswerte müssen ggf. an die Problemgröße angepasst werden) 88q
+//(Die Bestrafungs- bzw. Belohnungswerte müssen ggf. an die Problemgröße angepasst werden)
 void calculateHamiltonMatrix() {
   for (int l=0; l<colorNum; l++) {
     for (int x=0; x<flowerNum; x++) {
@@ -57,11 +57,11 @@ void calculateHamiltonMatrix() {
         for (int a=0; a<flowerNum; a++) {
 
           if (x==a && l!=m) { //nur eine Farbe pro Kästchen
-            hamiltonMatrix[x*colorNum+l][a*colorNum+m] = 12;
+            hamiltonMatrix[x*colorNum+l][a*colorNum+m] += 14;
           }
 
           if (x!=a && l==m) { //möglichst wenig gleiche Farben
-            hamiltonMatrix[x*colorNum+l][a*colorNum+m] +=6;
+            hamiltonMatrix[x*colorNum+l][a*colorNum+m] += 6;
           }
 
           if (x==a&&l==m) { //Grundbelohnung
@@ -71,7 +71,7 @@ void calculateHamiltonMatrix() {
 
           /*
           Farbwunschbelohnung:
-           wenn Kästchen nebeneinanderliegen wird die gesamte kombi-Liste durchgegeangen und 
+           wenn Kästchen a und x nebeneinanderliegen wird die gesamte kombi-Liste durchgegeangen und 
            jede kombi überprüft ob sie grade von m und l dargestellt wird und die belohnung 
            an der entsprechenden Stelle angetragen.
            Die Felder sind folgendermaßen nummeriert:
@@ -87,12 +87,12 @@ void calculateHamiltonMatrix() {
             (x==4&&a==5||x==5&&a==4)||(x==4&&a==6||x==6&&a==4)||(x==4&&a==7||x==7&&a==4)||
             (x==5&&a==7||x==7&&a==5)||
             (x==6&&a==7||x==7&&a==6)||(x==6&&a==8||x==8&&a==6)||
-            (x==7&&a==8||x==8&&a==7)) { //checkt ob grade 2 nebeneinanderliegende Felder von x und a dargestellt werden (Sorry Paul, ist nicht die schönste Variante)
+            (x==7&&a==8||x==8&&a==7)) { //checkt ob grade 2 nebeneinanderliegende Felder von x und a dargestellt werden
 
             for (int i=0; i<wishes.length; i++) {
-
+              
               if (wishes[i][0]==m&&wishes[i][1]==l || wishes[i][0]==l&&wishes[i][1]==m) {
-                hamiltonMatrix[x*colorNum+l][a*colorNum+m] -= 1.5*wishes[i][2];
+                hamiltonMatrix[x*colorNum+l][a*colorNum+m] -= 2*wishes[i][2];
               }
             }
           }
