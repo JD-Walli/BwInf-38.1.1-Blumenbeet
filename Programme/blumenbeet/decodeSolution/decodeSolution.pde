@@ -1,4 +1,6 @@
-String solution="0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0";
+//bei solution die zu überprüfende Lösung eingeben. Um die Lösung zu überprüfen muss in der Datei qubomatrix.txt die dazugehörige Matrix und in input.txt die Aufgabenstellung liegen.
+//Sie ist aufgebaut wie folgt (bei sieben erforderten Farben): Topf0blau Topf0gelb Topf0gruen Topf0orange Topf0rosa Topf0rot Topf0tuerkis Topf1blau Topf1 gelb ...
+String solution="0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0";
 int flowerNum=9;
 int solutionInt[]=int(split(solution, " "));
 int colorNum=solutionInt.length/flowerNum;
@@ -156,7 +158,7 @@ void flowerConfigGraphicalOutput(boolean blumenkasten[][]) {
 }
 
 
-//Kostenfunktion für simulated annealing
+//Kostenfunktion zur Berechnung der Energie (Matrix * Lösung)
 int costFunction(boolean[][]blumenkastenLocal) {
   int ergebnis=0;
   int[] vektor=new int[flowerNum*colorNum];
@@ -202,7 +204,7 @@ void reassignColorIDs() {
       }
     }
     if (colorNum!=count) {
-      colorNum=count;
+      colorNum=count-1;
       println("Mehr Wunschfarben als max. Farbanzahl. Farbanzahl ");
     }
     print("Farbzuordnung:  ");
