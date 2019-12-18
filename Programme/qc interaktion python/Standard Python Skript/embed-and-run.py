@@ -14,7 +14,7 @@ for index,value in np.ndenumerate(qubomatrix):
 print('Converted matrix into QUBO for D-Wave:\n', qubo, '\n')
 # embed and run on the D-Wave with 1000 reads
 sampler = EmbeddingComposite(DWaveSampler())
-response = sampler.sample_qubo(qubo, num_reads=10000, annealing_time=80,chain_strength=25)
+response = sampler.sample_qubo(qubo, num_reads=10000, annealing_time=99,chain_strength=35)
 #print('Response from the D-Wave:\n', response, '\n')
 # save results in results.txt
 with open('results.txt','w') as file:
